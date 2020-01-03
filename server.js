@@ -10,6 +10,8 @@ const mongoose=require("mongoose")
 const indexRouter=require('./routes/index')
 const userRouter=require('./routes/users/users')
 const expressSession=require('express-session')
+const passport=require('passport')
+const flash=require('connect-flash')
 
 app.use(expressLayouts)
 app.set("view engine","ejs")
@@ -22,6 +24,16 @@ app.use(expressSession({
     resave:false,
     saveUninitialized:false
 }))
+app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
+require('./config/passport')(passport)
+app.use((req,res,next)=>{
+    res.locals.success_msg=req.flash("success_msg")
+    res.locals.error_msg=req.flash("error_msg")
+    res.locals.error=req.flash("error")
+    next()
+})
 
 
 app.use("/",indexRouter)
@@ -32,6 +44,7 @@ mongoose.connect(process.env.DATABASE_URL,{useNewUrlParser:true,useUnifiedTopolo
 const db=mongoose.connection
 db.on("error",(error)=>console.log(error))
 db.once("open",()=>console.log("Connected to database"))
+require('./config/passport')
 
 const port=process.env.PORT || 3000
 

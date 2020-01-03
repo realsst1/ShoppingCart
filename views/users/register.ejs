@@ -4,7 +4,7 @@
         <h1 class="text-center mb-3">
           <i class="fa fa-user-plus"></i> Register
         </h1>
-        <%- include('../../partials/messages.ejs')%>
+        <%- include('../../partials/messages.ejs') %>
         <form action="/users/register" method="POST">
           <div class="form-group">
             <label for="name">Name</label>
@@ -69,7 +69,7 @@
               name="address"
               class="form-control"
               placeholder="Enter Address"
-              value="<%= typeof address != 'undefined' ? contact : '' %>"
+              value="<%= typeof address != 'undefined' ? address : '' %>"
             />
           </div>
           <button type="submit" class="btn btn-primary btn-block">
