@@ -13,6 +13,7 @@ const expressSession=require('express-session')
 const passport=require('passport')
 const flash=require('connect-flash')
 const validator=require('express-validator')
+const {ensureAuthenticated}=require('./config/auth')
 
 app.use(expressLayouts)
 app.set("view engine","ejs")
@@ -34,6 +35,7 @@ app.use((req,res,next)=>{
     res.locals.success_msg=req.flash("success_msg")
     res.locals.error_msg=req.flash("error_msg")
     res.locals.error=req.flash("error")
+    res.locals.login=req.isAuthenticated()
     next()
 })
 
