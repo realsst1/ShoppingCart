@@ -12,6 +12,7 @@ const userRouter=require('./routes/users/users')
 const expressSession=require('express-session')
 const passport=require('passport')
 const flash=require('connect-flash')
+const validator=require('express-validator')
 
 app.use(expressLayouts)
 app.set("view engine","ejs")
@@ -19,6 +20,7 @@ app.set("views",__dirname+"/views")
 app.set("layout","layouts/layout")
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended:false}))
+//app.use(validator())
 app.use(expressSession({
     secret:"mysecret",
     resave:false,

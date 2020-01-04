@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const bcrypt = require("bcrypt-nodejs");
 const User = require("../../models/user");
+const {ensureAuthenticated}=require('../../config/auth')
 
 router.get("/signin", (req, res) => {
   res.render("users/signin.ejs");
@@ -38,6 +39,12 @@ router.post("/register", async (req, res) => {
       errors.push({
         msg: "Password should be atleast 6 characters\n"
       });
+    }
+    const emailRegEx= /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    if(!emailRegEx.test(email)){
+      errors.push({
+        msg:'Invalid Email'
+      })
     }
 
     if (errors.length > 0) {
@@ -89,17 +96,41 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/profile", (req, res) => {
+router.get("/profile",ensureAuthenticated, (req, res) => {
   console.log("profiff");
   res.render("users/profile.ejs");
 });
 
 router.post("/login", (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/users/profile",
-    failureRedirect: "/users/login",
-    failureFlash: true
-  })(req, res, next);
+  let errors=[]
+  const {email,password}=req.body
+  if(!email || !password){
+    errors.push({
+      msg:'Please fill all fields'
+    })
+  }
+  if(password.length<6){
+    errors.push({
+      msg:'Password must be atleast 6 characters'
+    })
+  }
+  const emailRegEx= /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  if(!emailRegEx.test(email)){
+    errors.push({
+      msg:'Invalid Email'
+    })
+  }
+
+  if(errors.length>0){
+    res.render("users/signin",{errors:errors,email:email})
+  }
+  else{
+    passport.authenticate("local", {
+      successRedirect: "/users/profile",
+      failureRedirect: "/users/signin",
+      failureFlash: true
+    })(req, res, next);
+  }
 });
 
 router.get("/logout", (req, res) => {
