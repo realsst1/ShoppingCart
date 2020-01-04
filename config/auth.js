@@ -4,6 +4,6 @@ module.exports={
             return next()
         }
         req.flash('error_msg','Please log in to view')
-        res.redirect('/users/login')
+        res.redirect('/users/signin')
     }
 }
