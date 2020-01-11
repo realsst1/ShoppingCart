@@ -35,7 +35,8 @@ router.get("/shopping-cart", (req, res) => {
     var cart = new Cart(req.session.cart);
     res.render("../views/shop/shopping-cart.ejs", {
       products: cart.generateArray(),
-      totalPrice: cart.totalPrice
+      totalPrice: cart.totalPrice,
+      totalQty:cart.totalQty
     });
   }
 });
