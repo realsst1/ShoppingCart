@@ -9,7 +9,7 @@
       text-overflow:ellipsis;
       white-space:nowrap;"><%=product.productDesc%></p>
       <strong>Rs <%=product.productPrice%></strong>
-      <a href="#" class="btn btn-primary float-right">Add to Cart</a>
+      <a href="/add-to-cart/<%=product._id%>" class="btn btn-primary float-right">Add to Cart</a>
     </div>
   </div>
   <%})%>

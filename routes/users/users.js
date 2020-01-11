@@ -64,7 +64,7 @@ router.post("/register", async (req, res) => {
       //console.log("check for useer");
       //hash password
       hPassword =bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);
-      console.log(hPassword);
+      //console.log(hPassword);
       if (checkUser) {
         errors.push({
           msg: "User already exists with this email"
@@ -85,7 +85,7 @@ router.post("/register", async (req, res) => {
           contact,
           address
         });
-        console.log(user)
+        //console.log(user)
         await user.save();
         req.flash("success_msg", "You are now registered and can log in");
         res.redirect("/users/signin");

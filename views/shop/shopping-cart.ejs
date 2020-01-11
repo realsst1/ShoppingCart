@@ -1,0 +1,21 @@
+<% if(products) { %>
+<div class="container mx-3 my-3">
+    <h2 class="my-2">Your Cart</h2>
+    <ul class="list-group">
+        <% products.forEach(product=>{%>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <%=product.item.title%>
+          <span class="badge badge-primary badge-pill"><%=product.qty%></span>
+        </li>
+        <%})%>
+      </ul>
+</div>
+<hr>
+<div class="container mx-3 my-3">
+    <button class="btn btn-primary">Checkout</button>
+</div>
+<%} else {%>
+    <div class="container mx-3 my-3">
+        <h2>No Items in the cart</h2>
+    </div>
+<%}%>
