@@ -36,7 +36,20 @@ router.get("/shopping-cart", (req, res) => {
     res.render("../views/shop/shopping-cart.ejs", {
       products: cart.generateArray(),
       totalPrice: cart.totalPrice,
-      totalQty:cart.totalQty
+      totalQty: cart.totalQty
+    });
+  }
+});
+
+router.get("/checkout", (req, res) => {
+  if (req.session.cart == null) {
+    res.redirect("/shopping-cart")
+  } else {
+    var cart = new Cart(req.session.cart);
+    res.render("../views/shop/checkout.ejs", {
+      products: cart.generateArray(),
+      totalPrice: cart.totalPrice,
+      totalQty: cart.totalQty
     });
   }
 });
