@@ -14,13 +14,15 @@ const passport=require('passport')
 const flash=require('connect-flash')
 const validator=require('express-validator')
 const {ensureAuthenticated}=require('./config/auth')
+const path=require('path')
 const mongoStore=require('connect-mongo')(expressSession)
 
 app.use(expressLayouts)
 app.set("view engine","ejs")
 app.set("views",__dirname+"/views")
 app.set("layout","layouts/layout")
-app.use(express.static("public"))
+// app.use(express.static("public"))
+app.use('/public',express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({extended:false}))
 //app.use(validator())
 app.use(expressSession({
