@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 const Order = require("../models/order");
+const {ensureAuthenticated}=require('../config/auth')
 
 router.get("/", async (req, res) => {
   try {
@@ -42,7 +43,7 @@ router.get("/shopping-cart", (req, res) => {
   }
 });
 
-router.get("/checkout", (req, res) => {
+router.get("/checkout",ensureAuthenticated, (req, res) => {
   if (req.session.cart == null) {
     res.redirect("/shopping-cart");
   } else {
@@ -57,7 +58,7 @@ router.get("/checkout", (req, res) => {
   }
 });
 
-router.post("/checkout", (req, res) => {
+router.post("/checkout",ensureAuthenticated ,(req, res) => {
   if (!req.session.cart) {
     return res.redirect("/shopping-cart");
   }
