@@ -4,6 +4,8 @@ const passport = require("passport");
 const bcrypt = require("bcrypt-nodejs");
 const User = require("../../models/user");
 const {ensureAuthenticated}=require('../../config/auth')
+const Order=require('../../models/order')
+const Cart=require('../../models/cart')
 
 router.get("/signin", (req, res) => {
   res.render("users/signin.ejs");
@@ -97,8 +99,18 @@ router.post("/register", async (req, res) => {
 });
 
 router.get("/profile",ensureAuthenticated, (req, res) => {
-  console.log("profiff");
-  res.render("users/profile.ejs");
+  Order.find({user:req.user},(err,orders)=>{
+    if(err){
+      return res.write("Error retrieving orders")
+    }
+    var cart;
+    orders.forEach((order)=>{
+      cart=new Cart(order.cart)
+      order.items=cart.generateArray()
+    })
+    res.render("users/profile",{orders:orders})
+  })
+  //res.render("users/profile.ejs");
 });
 
 router.post("/login", (req, res, next) => {
