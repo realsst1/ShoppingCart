@@ -1,4 +1,5 @@
 const mongoose=require('mongoose')
+const moment=require('moment')
 
 const OrderSchema=mongoose.Schema({
     user:{
@@ -39,6 +40,11 @@ const OrderSchema=mongoose.Schema({
     },
     email:{
         type:String,
+        required:true
+    },
+    orderDate:{
+        type:String,
+        default:moment(Date.now()).format('MMMM Do YYYY, h:mm a'),
         required:true
     }
 })
